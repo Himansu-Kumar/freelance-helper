@@ -19,9 +19,15 @@ app.use(cors());
 
 // Route files
 import auth from './routes/auth.js';
+import clients from './routes/clients.js';
+import projects from './routes/projects.js';
+import invoices from './routes/invoices.js';
 
 // Mount routers
 app.use('/api/v1/auth', auth);
+app.use('/api/v1/clients', clients);
+app.use('/api/v1/projects', projects);
+app.use('/api/v1/invoices', invoices);
 
 app.get('/', (req, res) => {
   res.send('API is running...');

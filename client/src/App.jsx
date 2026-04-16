@@ -5,6 +5,9 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import DashboardLayout from './layouts/DashboardLayout';
 import Dashboard from './pages/Dashboard';
+import Clients from './pages/Clients';
+import Projects from './pages/Projects';
+import Invoices from './pages/Invoices';
 
 function App() {
   return (
@@ -17,7 +20,9 @@ function App() {
           <Route path="/" element={<DashboardLayout />}>
             <Route index element={<Navigate to="/dashboard" replace />} />
             <Route path="dashboard" element={<Dashboard />} />
-            {/* Future routes: clients, projects, invoices, etc. */}
+            <Route path="clients" element={<Clients />} />
+            <Route path="projects" element={<Projects />} />
+            <Route path="invoices" element={<Invoices />} />
           </Route>
         </Routes>
       </AuthProvider>

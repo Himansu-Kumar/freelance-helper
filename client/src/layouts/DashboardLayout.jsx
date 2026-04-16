@@ -1,7 +1,7 @@
 import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, NavLink } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { LogOut, LayoutDashboard } from 'lucide-react';
+import { LogOut, LayoutDashboard, Users, Briefcase, FileText } from 'lucide-react';
 
 const DashboardLayout = () => {
   const { user, loading, logout } = useAuth();
@@ -21,10 +21,22 @@ const DashboardLayout = () => {
           </span>
         </div>
         <nav className="flex-1 px-4 py-4 space-y-1">
-          <a href="#" className="bg-indigo-50 text-indigo-600 group flex items-center px-2 py-2 text-sm font-medium rounded-md">
+          <NavLink to="/dashboard" className={({isActive}) => `group flex items-center px-2 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}>
+            <LayoutDashboard className="mr-3 h-5 w-5" />
             Dashboard
-          </a>
-          {/* Add more links later */}
+          </NavLink>
+          <NavLink to="/clients" className={({isActive}) => `group flex items-center px-2 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}>
+            <Users className="mr-3 h-5 w-5" />
+            Clients
+          </NavLink>
+          <NavLink to="/projects" className={({isActive}) => `group flex items-center px-2 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}>
+            <Briefcase className="mr-3 h-5 w-5" />
+            Projects
+          </NavLink>
+          <NavLink to="/invoices" className={({isActive}) => `group flex items-center px-2 py-2 text-sm font-medium rounded-md ${isActive ? 'bg-indigo-50 text-indigo-600' : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'}`}>
+            <FileText className="mr-3 h-5 w-5" />
+            Invoices
+          </NavLink>
         </nav>
         <div className="p-4 border-t border-gray-200">
           <div className="flex items-center">
