@@ -24,7 +24,7 @@ const invoiceSchema = new mongoose.Schema({
 });
 
 // Auto-increment invoiceNumber and calculate totalAmount before saving
-invoiceSchema.pre('save', async function(next) {
+invoiceSchema.pre('save', async function() {
   try {
     // Calculate total amount
     if (this.isModified('lineItems') && this.lineItems && this.lineItems.length > 0) {
@@ -46,9 +46,8 @@ invoiceSchema.pre('save', async function(next) {
         this.invoiceNumber = 'INV-001';
       }
     }
-    next();
   } catch (error) {
-    next(error);
+    throw error;
   }
 });
 

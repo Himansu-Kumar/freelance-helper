@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Plus, FileText, Search, Download, Trash2, Edit } from 'lucide-react';
 import api from '../utils/api';
 import InvoiceModal from '../components/InvoiceModal';
-import jsPDF from 'jspdf';
-import 'jspdf-autotable';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 const Invoices = () => {
   const [invoices, setInvoices] = useState([]);
@@ -82,7 +82,7 @@ const Invoices = () => {
       tableRows.push([item.description, item.quantity, `$${item.rate.toFixed(2)}`, `$${amount}`]);
     });
 
-    doc.autoTable({
+    autoTable(doc, {
       startY: 85,
       head: [tableColumn],
       body: tableRows,
@@ -90,7 +90,7 @@ const Invoices = () => {
       headStyles: { fillColor: [79, 70, 229] }
     });
 
-    const finalY = doc.lastAutoTable.finalY || 85;
+    const finalY = doc.lastAutoTable?.finalY || 85;
     doc.setFontSize(12);
     doc.setTextColor(0);
     doc.text(`Total Amount: $${invoice.totalAmount.toLocaleString()}`, 14, finalY + 15);
