@@ -4,12 +4,15 @@ import api from '../utils/api';
 import InvoiceModal from '../components/InvoiceModal';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { useAuth } from '../context/AuthContext';
 
 const Invoices = () => {
+  const { user } = useAuth();
   const [invoices, setInvoices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editInvoice, setEditInvoice] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const openAddModal = () => {
     setEditInvoice(null);
@@ -67,12 +70,22 @@ const Invoices = () => {
 
     doc.setTextColor(0);
     doc.setFontSize(12);
-    doc.text('Bill To:', 14, 55);
+    doc.text('Bill From:', 14, 55);
     doc.setFontSize(10);
     doc.setTextColor(100);
-    doc.text(invoice.client?.name || 'N/A', 14, 61);
-    if (invoice.client?.company) doc.text(invoice.client.company, 14, 67);
-    if (invoice.client?.email) doc.text(invoice.client.email, 14, 73);
+    doc.text(user?.businessName || user?.name || 'Your Name', 14, 61);
+    doc.text(user?.email || '', 14, 67);
+    if (user?.address) doc.text(user.address, 14, 73);
+    if (user?.taxId) doc.text(`Tax ID: ${user.taxId}`, 14, 79);
+
+    doc.setTextColor(0);
+    doc.setFontSize(12);
+    doc.text('Bill To:', 120, 55);
+    doc.setFontSize(10);
+    doc.setTextColor(100);
+    doc.text(invoice.client?.name || 'N/A', 120, 61);
+    if (invoice.client?.company) doc.text(invoice.client.company, 120, 67);
+    if (invoice.client?.email) doc.text(invoice.client.email, 120, 73);
 
     const tableColumn = ["Description", "Quantity", "Rate", "Amount"];
     const tableRows = [];
@@ -83,7 +96,7 @@ const Invoices = () => {
     });
 
     autoTable(doc, {
-      startY: 85,
+      startY: 95,
       head: [tableColumn],
       body: tableRows,
       theme: 'grid',
@@ -127,6 +140,8 @@ const Invoices = () => {
             <input
               type="text"
               placeholder="Search by invoice number or client..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
             />
           </div>
@@ -160,7 +175,7 @@ const Invoices = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {invoices.map((invoice) => (
+                {invoices.filter(i => (i.invoiceNumber && i.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase())) || (i.client?.name && i.client.name.toLowerCase().includes(searchQuery.toLowerCase()))).map((invoice) => (
                   <tr key={invoice._id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">
                       {invoice.invoiceNumber}

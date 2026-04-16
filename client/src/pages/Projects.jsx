@@ -8,6 +8,7 @@ const Projects = () => {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editProject, setEditProject] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const openAddModal = () => {
     setEditProject(null);
@@ -61,6 +62,8 @@ const Projects = () => {
             <input
               type="text"
               placeholder="Search projects..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:text-sm transition-colors"
             />
           </div>
@@ -86,7 +89,7 @@ const Projects = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
+            {projects.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || (p.client?.name && p.client.name.toLowerCase().includes(searchQuery.toLowerCase()))).map((project) => (
               <div 
                 key={project._id} 
                 onClick={() => { setEditProject(project); setIsModalOpen(true); }}

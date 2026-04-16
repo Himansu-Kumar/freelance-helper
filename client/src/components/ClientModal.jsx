@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../utils/api';
 import { X } from 'lucide-react';
 
-const ClientModal = ({ isOpen, onClose, refreshData }) => {
+const ClientModal = ({ isOpen, onClose, refreshData, editData }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -13,6 +13,21 @@ const ClientModal = ({ isOpen, onClose, refreshData }) => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (editData) {
+      setFormData({
+        name: editData.name || '',
+        email: editData.email || '',
+        company: editData.company || '',
+        phone: editData.phone || '',
+        address: editData.address || '',
+        notes: editData.notes || ''
+      });
+    } else {
+      setFormData({ name: '', email: '', company: '', phone: '', address: '', notes: '' });
+    }
+  }, [editData, isOpen]);
 
   if (!isOpen) return null;
 
@@ -25,7 +40,11 @@ const ClientModal = ({ isOpen, onClose, refreshData }) => {
     setLoading(true);
     setError(null);
     try {
-      await api.post('/clients', formData);
+      if (editData) {
+        await api.put(`/clients/${editData._id}`, formData);
+      } else {
+        await api.post('/clients', formData);
+      }
       if(refreshData) refreshData();
       onClose();
       // Reset form
@@ -41,7 +60,7 @@ const ClientModal = ({ isOpen, onClose, refreshData }) => {
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm">
       <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden">
         <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h2 className="text-xl font-semibold text-gray-800">Add New Client</h2>
+          <h2 className="text-xl font-semibold text-gray-800">{editData ? 'Edit Client' : 'Add New Client'}</h2>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
             <X className="h-5 w-5" />
           </button>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Users, Search, Trash2 } from 'lucide-react';
+import { Plus, Users, Search, Trash2, Edit, Eye } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import api from '../utils/api';
 import ClientModal from '../components/ClientModal';
 
@@ -7,6 +8,8 @@ const Clients = () => {
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editClient, setEditClient] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     fetchClients();
@@ -57,6 +60,8 @@ const Clients = () => {
             <input
               type="text"
               placeholder="Search clients..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:text-sm transition-colors"
             />
           </div>
@@ -88,7 +93,7 @@ const Clients = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {clients.map((client) => (
+                {clients.filter(c => c.name.toLowerCase().includes(searchQuery.toLowerCase()) || (c.company && c.company.toLowerCase().includes(searchQuery.toLowerCase()))).map((client) => (
                   <tr key={client._id} className="hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
@@ -108,7 +113,21 @@ const Clients = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(client.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end gap-3 items-center">
+                      <Link 
+                        to={`/clients/${client._id}`}
+                        className="text-gray-400 hover:text-blue-600 transition-colors"
+                        title="View Details"
+                      >
+                        <Eye className="h-5 w-5" />
+                      </Link>
+                      <button 
+                        onClick={() => { setEditClient(client); setIsModalOpen(true); }}
+                        className="text-gray-400 hover:text-indigo-600 transition-colors"
+                        title="Edit Client"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
                       <button 
                         onClick={() => handleDelete(client._id)}
                         className="text-gray-400 hover:text-red-600 transition-colors"
@@ -127,8 +146,9 @@ const Clients = () => {
 
       <ClientModal 
         isOpen={isModalOpen} 
-        onClose={() => setIsModalOpen(false)} 
+        onClose={() => { setIsModalOpen(false); setEditClient(null); }} 
         refreshData={fetchClients} 
+        editData={editClient}
       />
     </div>
   );
