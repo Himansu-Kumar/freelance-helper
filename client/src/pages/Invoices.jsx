@@ -36,11 +36,11 @@ const Invoices = () => {
 
   const getStatusColor = (status) => {
     switch(status) {
-      case 'Draft': return 'bg-gray-100 text-gray-800';
-      case 'Sent': return 'bg-blue-100 text-blue-800';
-      case 'Paid': return 'bg-green-100 text-green-800';
-      case 'Overdue': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'Draft': return 'border-black text-black';
+      case 'Sent': return 'bg-black text-white';
+      case 'Paid': return 'border-2 border-black text-black font-bold';
+      case 'Overdue': return 'bg-white text-black border border-dashed border-black';
+      default: return 'border-black text-black';
     }
   };
 
@@ -120,89 +120,89 @@ const Invoices = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b-2 border-black pb-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Invoices</h1>
-          <p className="text-sm text-gray-500">Manage billing and track your payments.</p>
+          <h1 className="text-3xl font-black text-black uppercase tracking-tighter">Invoices</h1>
+          <p className="text-sm text-black">MONOCHROME BILLING SYSTEM</p>
         </div>
-        <button onClick={openAddModal} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium">
-          <Plus className="h-4 w-4" />
+        <button onClick={openAddModal} className="flex items-center gap-2 bg-black hover:bg-white hover:text-black border border-black text-white px-6 py-2 transition-colors text-sm font-bold uppercase">
+          <Plus className="h-4 w-4" strokeWidth={2.5} />
           Create Invoice
         </button>
       </div>
 
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-4">
+      <div className="bg-white p-4 border-2 border-black">
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
           <div className="relative w-full sm:w-96">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-gray-400" />
+              <Search className="h-4 w-4 text-black" strokeWidth={1.5} />
             </div>
             <input
               type="text"
-              placeholder="Search by invoice number or client..."
+              placeholder="SEARCH INVOICES..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-indigo-500 sm:text-sm"
+              className="block w-full pl-10 pr-3 py-2 border-2 border-black bg-white text-black placeholder-black/50 focus:outline-none sm:text-sm uppercase font-bold"
             />
           </div>
         </div>
 
         {loading ? (
-          <div className="text-center py-10 text-gray-500">Loading invoices...</div>
+          <div className="text-center py-10 text-black font-bold">LOADING...</div>
         ) : invoices.length === 0 ? (
-          <div className="text-center py-16 px-4">
-            <FileText className="mx-auto h-12 w-12 text-gray-300" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No invoices</h3>
-            <p className="mt-1 text-sm text-gray-500">No invoices generated yet.</p>
+          <div className="text-center py-16 px-4 border border-black border-dashed">
+            <FileText className="mx-auto h-12 w-12 text-black" strokeWidth={1} />
+            <h3 className="mt-2 text-sm font-bold text-black uppercase">No invoices found</h3>
+            <p className="mt-1 text-sm text-black">The ledger is empty.</p>
             <div className="mt-6">
-              <button onClick={openAddModal} className="flex items-center gap-2 mx-auto bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium">
-                <Plus className="h-4 w-4" />
+              <button onClick={openAddModal} className="flex items-center gap-2 mx-auto bg-black text-white px-6 py-2 border border-black hover:bg-white hover:text-black transition-colors text-sm font-bold uppercase">
+                <Plus className="h-4 w-4" strokeWidth={2.5} />
                 Create Invoice
               </button>
             </div>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice ID</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+            <table className="min-w-full divide-y-2 divide-black border-collapse">
+              <thead>
+                <tr className="bg-black text-white">
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-black uppercase tracking-widest">ID</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-black uppercase tracking-widest">Client</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-black uppercase tracking-widest">Amount</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-black uppercase tracking-widest">Status</th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-black uppercase tracking-widest">Due</th>
                   <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y border-black">
                 {invoices.filter(i => (i.invoiceNumber && i.invoiceNumber.toLowerCase().includes(searchQuery.toLowerCase())) || (i.client?.name && i.client.name.toLowerCase().includes(searchQuery.toLowerCase()))).map((invoice) => (
-                  <tr key={invoice._id} className="hover:bg-gray-50 transition-colors">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-indigo-600">
+                  <tr key={invoice._id} className="hover:bg-black hover:text-white transition-colors border-b border-black group">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold">
                       {invoice.invoiceNumber}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="text-sm font-medium text-gray-900">{invoice.client?.name || 'Unknown Client'}</div>
+                      <div className="text-sm font-bold">{invoice.client?.name || 'Unknown Client'}</div>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm font-black">
                       ${invoice.totalAmount.toLocaleString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(invoice.status)}`}>
+                      <span className={`px-3 py-1 inline-flex text-xs leading-5 font-black border ${getStatusColor(invoice.status)} uppercase`}>
                         {invoice.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
                       {new Date(invoice.dueDate).toLocaleDateString()}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex justify-end gap-3 items-center">
-                       <button onClick={() => generatePDF(invoice)} className="text-gray-400 hover:text-indigo-600 transition-colors" title="Download PDF">
-                          <Download className="h-5 w-5" />
+                       <button onClick={() => generatePDF(invoice)} className="text-black group-hover:text-white transition-colors p-1 border border-transparent hover:border-black" title="Download PDF">
+                          <Download className="h-5 w-5" strokeWidth={1.5} />
                        </button>
-                       <button onClick={() => { setEditInvoice(invoice); setIsModalOpen(true); }} className="text-gray-400 hover:text-indigo-600 transition-colors" title="Edit Invoice">
-                         <Edit className="h-4 w-4" />
+                       <button onClick={() => { setEditInvoice(invoice); setIsModalOpen(true); }} className="text-black group-hover:text-white transition-colors p-1 border border-transparent hover:border-black" title="Edit Invoice">
+                         <Edit className="h-4 w-4" strokeWidth={1.5} />
                        </button>
-                      <button onClick={() => handleDelete(invoice._id)} className="text-gray-400 hover:text-red-600 transition-colors" title="Delete Invoice">
-                        <Trash2 className="h-5 w-5" />
+                      <button onClick={() => handleDelete(invoice._id)} className="text-black group-hover:text-white transition-colors p-1 border border-transparent hover:border-black" title="Delete Invoice">
+                        <Trash2 className="h-5 w-5" strokeWidth={1.5} />
                       </button>
                     </td>
                   </tr>

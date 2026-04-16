@@ -21,43 +21,43 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-gray-100">
+    <div className="min-h-screen flex items-center justify-center bg-white py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full space-y-10 bg-white p-10 border-4 border-black">
         <div className="flex flex-col items-center">
-          <div className="bg-indigo-600 p-3 rounded-xl shadow-lg shadow-indigo-200">
-            <Briefcase className="h-8 w-8 text-white" />
+          <div className="border-4 border-black p-4">
+            <Briefcase className="h-10 w-10 text-black" strokeWidth={3} />
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            Welcome back
+          <h2 className="mt-8 text-center text-4xl font-black text-black uppercase tracking-tighter">
+            LOGIN_SYSTEM
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
-            Please enter your details to sign in.
+          <p className="mt-2 text-center text-xs font-black text-black uppercase tracking-widest opacity-60">
+            Secure Authentication Required
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
-            <div className="bg-red-50 text-red-500 p-3 rounded-lg text-sm text-center">
+            <div className="bg-black text-white p-4 font-black uppercase text-xs text-center border-2 border-black">
               {error}
             </div>
           )}
-          <div className="rounded-md shadow-sm space-y-4">
+          <div className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
+              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Email Address</label>
               <input
                 type="email"
                 required
-                className="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
-                placeholder="you@example.com"
+                className="block w-full px-4 py-3 border-4 border-black bg-white text-black placeholder-black/30 focus:bg-black focus:text-white transition-all outline-none font-bold uppercase text-sm"
+                placeholder="USER@DOMAIN.COM"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Password</label>
               <input
                 type="password"
                 required
-                className="appearance-none rounded-xl relative block w-full px-4 py-3 border border-gray-300 placeholder-gray-400 text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm transition-all duration-200"
+                className="block w-full px-4 py-3 border-4 border-black bg-white text-black placeholder-black/30 focus:bg-black focus:text-white transition-all outline-none font-bold"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -65,19 +65,19 @@ const Login = () => {
             </div>
           </div>
 
-          <div>
+          <div className="pt-4">
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all duration-200 shadow-lg shadow-indigo-200"
+              className="w-full flex justify-center py-4 px-4 border-4 border-black text-sm font-black uppercase tracking-widest text-white bg-black hover:bg-white hover:text-black transition-all"
             >
-              Sign in
+              Authorize
             </button>
           </div>
         </form>
-        <div className="text-center text-sm">
-          <span className="text-gray-600">Don't have an account? </span>
-          <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors">
-            Sign up now
+        <div className="text-center text-[10px] font-black uppercase tracking-widest">
+          <span className="opacity-40">No credential set? </span>
+          <Link to="/register" className="underline hover:bg-black hover:text-white p-1 transition-colors">
+            Register now
           </Link>
         </div>
       </div>

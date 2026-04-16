@@ -32,84 +32,83 @@ const Projects = () => {
 
   const getStatusColor = (status) => {
     switch(status) {
-      case 'Active': return 'bg-green-100 text-green-800 border-green-200';
-      case 'Completed': return 'bg-gray-100 text-gray-800 border-gray-200';
-      case 'On Hold': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'Cancelled': return 'bg-red-100 text-red-800 border-red-200';
-      default: return 'bg-indigo-100 text-indigo-800 border-indigo-200';
+      case 'Active': return 'border-black font-black text-black';
+      case 'Completed': return 'bg-black text-white';
+      case 'On Hold': return 'border-black border-dashed text-black';
+      case 'Cancelled': return 'line-through text-black';
+      default: return 'border-black text-black';
     }
   };
 
   return (
     <div className="space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b-2 border-black pb-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Projects</h1>
-          <p className="text-sm text-gray-500">Track and manage your ongoing work.</p>
+          <h1 className="text-3xl font-black text-black uppercase tracking-tighter">Projects</h1>
+          <p className="text-sm text-black font-bold uppercase tracking-widest">Active Engagements</p>
         </div>
-        <button onClick={openAddModal} className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium">
-          <Plus className="h-4 w-4" />
-          Add Project
+        <button onClick={openAddModal} className="flex items-center gap-2 bg-black text-white px-6 py-2 border-2 border-black hover:bg-white hover:text-black transition-colors text-sm font-black uppercase">
+          <Plus className="h-4 w-4" strokeWidth={3} />
+          New Project
         </button>
       </div>
 
-      <div className="bg-white p-4 rounded-xl shadow-sm border border-gray-200">
-        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-6">
+      <div className="bg-white border-2 border-black p-4">
+        <div className="flex flex-col sm:flex-row justify-between gap-4 mb-8">
           <div className="relative w-full sm:w-96">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <Search className="h-4 w-4 text-gray-400" />
+              <Search className="h-4 w-4 text-black" strokeWidth={2} />
             </div>
             <input
               type="text"
-              placeholder="Search projects..."
+              placeholder="SEARCH FILES..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-md leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 sm:text-sm transition-colors"
+              className="block w-full pl-10 pr-3 py-2 border-2 border-black bg-white text-black placeholder-black/30 outline-none font-bold uppercase text-sm"
             />
           </div>
-          <button className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium">
-            <Filter className="h-4 w-4" />
+          <button className="flex items-center gap-2 bg-white border-2 border-black text-black px-4 py-2 hover:bg-black hover:text-white transition-colors text-xs font-black uppercase">
+            <Filter className="h-4 w-4" strokeWidth={2} />
             Filter
           </button>
         </div>
 
         {loading ? (
-          <div className="text-center py-10 text-gray-500">Loading projects...</div>
+          <div className="text-center py-10 text-black font-black uppercase tracking-widest">Loading...</div>
         ) : projects.length === 0 ? (
-          <div className="text-center py-16 px-4">
-            <Briefcase className="mx-auto h-12 w-12 text-gray-300" />
-            <h3 className="mt-2 text-sm font-medium text-gray-900">No projects</h3>
-            <p className="mt-1 text-sm text-gray-500">Get started by creating a new project.</p>
+          <div className="text-center py-16 px-4 border border-black border-dashed">
+            <Briefcase className="mx-auto h-12 w-12 text-black" strokeWidth={1} />
+            <h3 className="mt-4 text-sm font-black text-black uppercase">Project log empty</h3>
             <div className="mt-6">
-              <button onClick={openAddModal} className="flex items-center gap-2 mx-auto bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-md transition-colors text-sm font-medium">
-                <Plus className="h-4 w-4" />
-                Add Project
+              <button onClick={openAddModal} className="flex items-center gap-2 mx-auto bg-black text-white px-6 py-2 border-2 border-black hover:bg-white hover:text-black transition-colors text-sm font-black uppercase">
+                <Plus className="h-4 w-4" strokeWidth={3} />
+                New Project
               </button>
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {projects.filter(p => p.name.toLowerCase().includes(searchQuery.toLowerCase()) || (p.client?.name && p.client.name.toLowerCase().includes(searchQuery.toLowerCase()))).map((project) => (
               <div 
                 key={project._id} 
                 onClick={() => { setEditProject(project); setIsModalOpen(true); }}
-                className="border border-gray-200 rounded-lg p-5 hover:border-indigo-300 hover:shadow-md transition-all group cursor-pointer bg-white"
+                className="border-2 border-black p-6 hover:bg-black hover:text-white transition-all group cursor-pointer bg-white"
               >
-                <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors">{project.name}</h3>
-                  <span className={`px-2.5 py-0.5 rounded-full text-xs font-medium border ${getStatusColor(project.status)}`}>
+                <div className="flex justify-between items-start mb-6">
+                  <h3 className="text-xl font-black uppercase tracking-tighter">{project.name}</h3>
+                  <span className={`px-2 py-0.5 text-[10px] font-black uppercase border-2 ${getStatusColor(project.status)}`}>
                     {project.status}
                   </span>
                 </div>
-                <p className="text-sm text-gray-500 mb-4 line-clamp-2">
-                  {project.description || 'No description provided.'}
+                <p className="text-xs font-bold uppercase opacity-60 mb-8 line-clamp-3 tracking-widest">
+                  {project.description || 'LOG_ENTRY_NULL'}
                 </p>
-                <div className="flex justify-between items-center text-sm border-t border-gray-100 pt-4">
-                  <div className="text-gray-600">
-                    <span className="font-medium">{project.client?.name || 'Unknown Client'}</span>
+                <div className="flex justify-between items-end border-t-2 border-black group-hover:border-white pt-4">
+                  <div className="text-[10px] font-black uppercase tracking-widest">
+                    {project.client?.name || 'UNKNOWN_CLIENT'}
                   </div>
                   {project.budget && (
-                    <div className="font-semibold text-gray-900">
+                    <div className="text-lg font-black tracking-tighter">
                       ${project.budget.toLocaleString()}
                     </div>
                   )}

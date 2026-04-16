@@ -119,24 +119,27 @@ const InvoiceModal = ({ isOpen, onClose, refreshData, editData }) => {
     : projects;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-3xl my-8">
-        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50 sticky top-0 rounded-t-xl z-10">
-          <h2 className="text-xl font-semibold text-gray-800">{editData ? 'Edit Invoice' : 'Create New Invoice'}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-            <X className="h-5 w-5" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-sm">
+      <div className="bg-white border-4 border-black w-full max-w-4xl max-h-[90vh] flex flex-col relative">
+        <div className="px-6 py-4 border-b-4 border-black flex justify-between items-center bg-white shrink-0">
+          <div className="flex flex-col">
+            <h2 className="text-3xl font-black text-black uppercase tracking-tighter leading-none">{editData ? 'Adjust Invoice' : 'New Entry'}</h2>
+            <p className="text-[10px] font-black uppercase tracking-[0.2em] mt-1 opacity-60">Accounting_Protocol_v1.0</p>
+          </div>
+          <button onClick={onClose} className="text-black hover:bg-black hover:text-white p-1 border-2 border-transparent hover:border-black transition-colors">
+            <X className="h-8 w-8" strokeWidth={3} />
           </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
-          {error && <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">{error}</div>}
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-8 space-y-10 custom-scrollbar">
+          {error && <div className="bg-black text-white p-4 font-black uppercase text-xs border-2 border-black tracking-widest">{error}</div>}
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Client *</label>
-                <select required name="client" value={formData.client} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                  <option value="" disabled>Select a client</option>
+                <label className="block text-[10px] font-black text-black uppercase mb-1 tracking-[0.2em]">Client *</label>
+                <select required name="client" value={formData.client} onChange={handleChange} className="w-full px-4 py-3 border-4 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold uppercase text-xs">
+                  <option value="" disabled>Select Client</option>
                   {clients.map(c => (
                     <option key={c._id} value={c._id}>{c.name}</option>
                   ))}
@@ -144,8 +147,8 @@ const InvoiceModal = ({ isOpen, onClose, refreshData, editData }) => {
               </div>
               
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Project (Optional)</label>
-                <select name="project" value={formData.project} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label className="block text-[10px] font-black text-black uppercase mb-1 tracking-[0.2em]">Project (Optional)</label>
+                <select name="project" value={formData.project} onChange={handleChange} className="w-full px-4 py-3 border-4 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold uppercase text-xs">
                   <option value="">No Project</option>
                   {filteredProjects.map(p => (
                     <option key={p._id} value={p._id}>{p.name}</option>
@@ -154,15 +157,15 @@ const InvoiceModal = ({ isOpen, onClose, refreshData, editData }) => {
               </div>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Due Date *</label>
-                <input required type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                <label className="block text-[10px] font-black text-black uppercase mb-1 tracking-[0.2em]">Due Date *</label>
+                <input required type="date" name="dueDate" value={formData.dueDate} onChange={handleChange} className="w-full px-4 py-3 border-4 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold text-xs" />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select name="status" value={formData.status} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                <label className="block text-[10px] font-black text-black uppercase mb-1 tracking-[0.2em]">Status</label>
+                <select name="status" value={formData.status} onChange={handleChange} className="w-full px-4 py-3 border-4 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold uppercase text-xs">
                   <option value="Draft">Draft</option>
                   <option value="Sent">Sent</option>
                   <option value="Paid">Paid</option>
@@ -172,51 +175,51 @@ const InvoiceModal = ({ isOpen, onClose, refreshData, editData }) => {
             </div>
           </div>
 
-          <div className="border-t border-gray-200 py-4">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Line Items</h3>
-              <button type="button" onClick={addLineItem} className="flex items-center gap-1 text-sm text-indigo-600 font-medium hover:text-indigo-800 transition-colors">
-                <Plus className="h-4 w-4" /> Add Item
+          <div className="border-t-4 border-black py-6">
+            <div className="flex justify-between items-center mb-8">
+              <h3 className="text-xl font-black text-black uppercase tracking-[0.2em]">Log:Entries</h3>
+              <button type="button" onClick={addLineItem} className="flex items-center gap-2 px-6 py-2 bg-black border-4 border-black text-white text-xs font-black uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
+                <Plus className="h-4 w-4" strokeWidth={3} /> Record Item
               </button>
             </div>
 
-            <div className="bg-gray-50 rounded-lg p-4 space-y-3 border border-gray-100">
-              <div className="hidden md:grid grid-cols-12 gap-4 text-sm font-medium text-gray-500 mb-2 px-2">
+            <div className="space-y-4">
+              <div className="hidden md:grid grid-cols-12 gap-4 text-xs font-black text-black uppercase tracking-widest px-2">
                 <div className="col-span-6">Description</div>
                 <div className="col-span-2">Qty</div>
-                <div className="col-span-2">Rate ($)</div>
+                <div className="col-span-2">Rate</div>
                 <div className="col-span-2 text-right">Amount</div>
               </div>
 
-              {formData.lineItems.map((item, index) => (
-                <div key={index} className="flex flex-col md:grid md:grid-cols-12 gap-4 items-center bg-white p-3 rounded border border-gray-200">
+                {formData.lineItems.map((item, index) => (
+                <div key={index} className="flex flex-col md:grid md:grid-cols-12 gap-6 items-center border-4 border-black p-6 bg-white shrink-0">
                   <div className="col-span-12 md:col-span-6 w-full">
-                    <input required type="text" placeholder="Item description" value={item.description} onChange={(e) => handleLineItemChange(index, 'description', e.target.value)} className="w-full px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:border-indigo-500" />
+                    <input required type="text" placeholder="DESCRIPTION" value={item.description} onChange={(e) => handleLineItemChange(index, 'description', e.target.value)} className="w-full px-4 py-2 border-4 border-black outline-none focus:bg-black focus:text-white font-bold text-xs" />
                   </div>
                   <div className="col-span-4 md:col-span-2 w-full">
-                    <input required type="number" min="1" placeholder="Qty" value={item.quantity} onChange={(e) => handleLineItemChange(index, 'quantity', Number(e.target.value))} className="w-full px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:border-indigo-500" />
+                    <input required type="number" min="1" placeholder="QTY" value={item.quantity} onChange={(e) => handleLineItemChange(index, 'quantity', Number(e.target.value))} className="w-full px-4 py-2 border-4 border-black outline-none focus:bg-black focus:text-white font-bold text-xs" />
                   </div>
                   <div className="col-span-4 md:col-span-2 w-full">
-                    <input required type="number" min="0" step="0.01" placeholder="Rate" value={item.rate} onChange={(e) => handleLineItemChange(index, 'rate', Number(e.target.value))} className="w-full px-3 py-1.5 border border-gray-300 rounded focus:outline-none focus:border-indigo-500" />
+                    <input required type="number" min="0" step="0.01" placeholder="RATE" value={item.rate} onChange={(e) => handleLineItemChange(index, 'rate', Number(e.target.value))} className="w-full px-4 py-2 border-4 border-black outline-none focus:bg-black focus:text-white font-bold text-xs" />
                   </div>
-                  <div className="col-span-4 md:col-span-2 w-full flex justify-between md:justify-end items-center gap-4">
-                    <span className="font-semibold text-gray-700 md:w-full md:text-right">${(item.quantity * item.rate).toFixed(2)}</span>
-                    <button type="button" onClick={() => removeLineItem(index)} className="text-red-400 hover:text-red-600 transition-colors" disabled={formData.lineItems.length === 1}>
-                      <Trash2 className="h-5 w-5" />
+                  <div className="col-span-4 md:col-span-2 w-full flex justify-between md:justify-end items-center gap-6">
+                    <span className="font-black text-black md:w-full md:text-right text-xl tracking-tighter">${(item.quantity * item.rate).toLocaleString()}</span>
+                    <button type="button" onClick={() => removeLineItem(index)} className="text-black hover:bg-black hover:text-white p-2 border-4 border-black transition-colors" disabled={formData.lineItems.length === 1}>
+                      <Trash2 className="h-5 w-5" strokeWidth={2.5} />
                     </button>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="flex justify-end mt-4">
-              <div className="text-right w-48">
-                <div className="flex justify-between items-center text-gray-600 mb-2">
+            <div className="flex justify-end mt-8 border-t-2 border-black pt-4">
+              <div className="text-right w-64">
+                <div className="flex justify-between items-center text-black font-bold uppercase text-xs mb-2">
                   <span>Subtotal:</span>
                   <span>${calculateTotal().toFixed(2)}</span>
                 </div>
-                <div className="flex justify-between items-center text-lg font-bold text-gray-900 pt-2 border-t border-gray-200">
-                  <span>Total:</span>
+                <div className="flex justify-between items-center text-2xl font-black text-black pt-2 border-t-4 border-black uppercase tracking-tighter">
+                  <span>Total Due:</span>
                   <span>${calculateTotal().toFixed(2)}</span>
                 </div>
               </div>
@@ -224,14 +227,14 @@ const InvoiceModal = ({ isOpen, onClose, refreshData, editData }) => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes / Terms</label>
-            <textarea name="notes" value={formData.notes} onChange={handleChange} rows="2" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Thank you for your business!"></textarea>
+            <label className="block text-[10px] font-black text-black uppercase mb-2 tracking-[0.2em]">Notes / Internal Terms</label>
+            <textarea name="notes" value={formData.notes} onChange={handleChange} rows="2" className="w-full px-4 py-3 border-4 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold uppercase text-xs" placeholder="ADDITIONAL_DATA..."></textarea>
           </div>
           
-          <div className="pt-4 border-t border-gray-100 flex justify-end gap-3 sticky bottom-0 bg-white">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors">Cancel</button>
-            <button type="submit" disabled={loading || clients.length === 0} className="px-5 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition-colors disabled:opacity-50">
-              {loading ? 'Saving...' : (editData ? 'Update Invoice' : 'Create Invoice')}
+          <div className="pt-8 border-t-4 border-black flex justify-end gap-6 bg-white sticky bottom-0 mt-8 pb-2">
+            <button type="button" onClick={onClose} className="px-8 py-3 bg-white border-4 border-black text-black font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors text-xs">Cancel</button>
+            <button type="submit" disabled={loading || clients.length === 0} className="px-12 py-3 bg-black text-white border-4 border-black font-black uppercase tracking-widest hover:bg-white hover:text-black transition-colors disabled:opacity-25 text-xs">
+              {loading ? 'PROCESSING...' : (editData ? 'Apply' : 'Generate')}
             </button>
           </div>
         </form>

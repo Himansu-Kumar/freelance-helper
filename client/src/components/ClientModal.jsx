@@ -57,48 +57,48 @@ const ClientModal = ({ isOpen, onClose, refreshData, editData }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/50 backdrop-blur-sm">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-lg overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
-          <h2 className="text-xl font-semibold text-gray-800">{editData ? 'Edit Client' : 'Add New Client'}</h2>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
-            <X className="h-5 w-5" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/80 backdrop-blur-sm">
+      <div className="bg-white border-4 border-black w-full max-w-lg overflow-hidden">
+        <div className="px-6 py-4 border-b-4 border-black flex justify-between items-center bg-white">
+          <h2 className="text-2xl font-black text-black uppercase tracking-tighter">{editData ? 'Edit Client' : 'New Client'}</h2>
+          <button onClick={onClose} className="text-black hover:bg-black hover:text-white p-1 border-2 border-transparent hover:border-black transition-colors">
+            <X className="h-6 w-6" strokeWidth={3} />
           </button>
         </div>
         
-        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-          {error && <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">{error}</div>}
+        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+          {error && <div className="bg-black text-white p-4 font-bold uppercase text-xs">{error}</div>}
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Company/Client Name *</label>
-            <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Acme Corp" />
+            <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Client Name *</label>
+            <input required type="text" name="name" value={formData.name} onChange={handleChange} className="w-full px-4 py-3 border-2 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold uppercase" placeholder="ACME CORP" />
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-              <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="contact@acme.com" />
+              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Email</label>
+              <input type="email" name="email" value={formData.email} onChange={handleChange} className="w-full px-4 py-3 border-2 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold uppercase" placeholder="CONTACT@ACME.COM" />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-              <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="+1 234 567 890" />
+              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Phone</label>
+              <input type="text" name="phone" value={formData.phone} onChange={handleChange} className="w-full px-4 py-3 border-2 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold" placeholder="+1234567890" />
             </div>
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Address</label>
-            <input type="text" name="address" value={formData.address} onChange={handleChange} className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="123 Main St, City, Country" />
+            <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Address</label>
+            <input type="text" name="address" value={formData.address} onChange={handleChange} className="w-full px-4 py-3 border-2 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold uppercase" placeholder="123 MAIN ST, CITY" />
           </div>
           
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Notes</label>
-            <textarea name="notes" value={formData.notes} onChange={handleChange} rows="3" className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="Any additional details..."></textarea>
+            <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Notes</label>
+            <textarea name="notes" value={formData.notes} onChange={handleChange} rows="3" className="w-full px-4 py-3 border-2 border-black bg-white focus:bg-black focus:text-white transition-colors outline-none font-bold uppercase" placeholder="INTERNAL NOTES..."></textarea>
           </div>
           
-          <div className="pt-4 border-t border-gray-100 flex justify-end gap-3 mt-6">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 font-medium transition-colors">Cancel</button>
-            <button type="submit" disabled={loading} className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 font-medium transition-colors disabled:opacity-50">
-              {loading ? 'Saving...' : 'Save Client'}
+          <div className="pt-6 border-t-4 border-black flex justify-end gap-4 mt-8">
+            <button type="button" onClick={onClose} className="px-6 py-2 bg-white border-2 border-black text-black font-black uppercase tracking-widest hover:bg-black hover:text-white transition-colors">Cancel</button>
+            <button type="submit" disabled={loading} className="px-8 py-2 bg-black text-white border-2 border-black font-black uppercase tracking-widest hover:bg-white hover:text-black transition-colors disabled:opacity-25">
+              {loading ? 'SAVING...' : 'Record'}
             </button>
           </div>
         </form>

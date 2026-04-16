@@ -43,8 +43,8 @@ const ClientDetails = () => {
     }
   };
 
-  if (loading) return <div className="text-center py-10 text-gray-500">Loading client details...</div>;
-  if (error || !client) return <div className="text-center py-10 text-red-500">{error || 'Client not found'}</div>;
+  if (loading) return <div className="text-center py-20 text-black font-black uppercase tracking-widest">Loading entry...</div>;
+  if (error || !client) return <div className="text-center py-20 text-white bg-black font-black uppercase tracking-widest">{error || 'Record Not Found'}</div>;
 
   const totalRevenue = invoices
     .filter(inv => inv.status === 'Paid')
@@ -53,91 +53,94 @@ const ClientDetails = () => {
   const activeProjects = projects.filter(p => p.status === 'Active').length;
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4 mb-2">
-        <button onClick={() => navigate('/clients')} className="text-gray-500 hover:text-indigo-600 transition-colors">
-          <ArrowLeft className="h-5 w-5" />
+    <div className="space-y-10">
+      <div className="flex items-center gap-6 border-b-4 border-black pb-6">
+        <button onClick={() => navigate('/clients')} className="p-2 border-2 border-black hover:bg-black hover:text-white transition-colors">
+          <ArrowLeft className="h-6 w-6" strokeWidth={3} />
         </button>
-        <h1 className="text-2xl font-bold text-gray-900">Client Overview</h1>
+        <div>
+          <h1 className="text-4xl font-black text-black uppercase tracking-tighter">Profile</h1>
+          <p className="text-xs font-black text-black uppercase tracking-widest opacity-60">Account Details</p>
+        </div>
       </div>
 
       {/* Client Summary Card */}
-      <div className="bg-white p-6 justify-between rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row gap-6">
+      <div className="bg-white border-4 border-black p-8 flex flex-col md:flex-row gap-8">
         <div className="flex-1">
-          <div className="flex items-center justify-between mb-4">
-             <div className="flex items-center gap-4">
-               <div className="h-16 w-16 flex-shrink-0 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 text-2xl font-bold">
+          <div className="flex items-start justify-between mb-8">
+             <div className="flex items-center gap-6">
+               <div className="h-20 w-20 flex-shrink-0 border-4 border-black bg-black text-white flex items-center justify-center text-4xl font-black">
                  {client.name.charAt(0).toUpperCase()}
                </div>
                <div>
-                 <h2 className="text-xl font-bold text-gray-900">{client.name}</h2>
-                 {client.company && <div className="text-gray-500 flex items-center gap-1 mt-1"><Building className="h-4 w-4"/> {client.company}</div>}
+                 <h2 className="text-3xl font-black text-black uppercase tracking-tighter">{client.name}</h2>
+                 {client.company && <div className="text-xs font-bold uppercase opacity-60 flex items-center gap-2 mt-2 tracking-widest"><Building className="h-4 w-4" strokeWidth={2}/> {client.company}</div>}
                </div>
              </div>
-             <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 bg-white border border-gray-200 text-gray-700 px-3 py-1.5 rounded-md hover:bg-gray-50 transition-colors text-sm font-medium">
-               <Edit className="h-4 w-4" />
+             <button onClick={() => setIsModalOpen(true)} className="flex items-center gap-2 bg-black text-white px-6 py-2 border-4 border-black hover:bg-white hover:text-black transition-colors text-xs font-black uppercase tracking-widest">
+               <Edit className="h-4 w-4" strokeWidth={2.5}/>
                Edit
              </button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 mt-8">
             {client.email && (
-              <div className="flex items-center gap-2 text-gray-600 text-sm">
-                <Mail className="h-4 w-4 text-gray-400" />
-                <a href={`mailto:${client.email}`} className="hover:text-indigo-600">{client.email}</a>
+              <div className="flex items-center gap-3 text-black font-bold uppercase tracking-widest text-[10px]">
+                <Mail className="h-4 w-4" strokeWidth={2.5} />
+                <a href={`mailto:${client.email}`} className="underline">{client.email}</a>
               </div>
             )}
             {client.phone && (
-              <div className="flex items-center gap-2 text-gray-600 text-sm">
-                <Phone className="h-4 w-4 text-gray-400" />
-                <a href={`tel:${client.phone}`} className="hover:text-indigo-600">{client.phone}</a>
+              <div className="flex items-center gap-3 text-black font-bold uppercase tracking-widest text-[10px]">
+                <Phone className="h-4 w-4" strokeWidth={2.5} />
+                <a href={`tel:${client.phone}`} className="underline">{client.phone}</a>
               </div>
             )}
             {client.address && (
-              <div className="flex items-center gap-2 text-gray-600 text-sm md:col-span-2">
-                <MapPin className="h-4 w-4 text-gray-400" />
-                <span>{client.address}</span>
+              <div className="flex items-center gap-3 text-black font-bold uppercase tracking-widest text-[10px] md:col-span-2">
+                <MapPin className="h-4 w-4" strokeWidth={2.5} />
+                <span className="opacity-60">{client.address}</span>
               </div>
             )}
           </div>
         </div>
 
-        <div className="md:w-64 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-gray-100 pt-4 md:pt-0 md:pl-6">
-          <div className="bg-gray-50 p-4 rounded-lg">
-            <div className="text-sm font-medium text-gray-500">Total Revenue</div>
-            <div className="mt-1 text-2xl font-bold text-gray-900">${totalRevenue.toLocaleString()}</div>
+        <div className="md:w-72 flex flex-col gap-6 border-t-2 md:border-t-0 md:border-l-2 border-black pt-8 md:pt-0 md:pl-8">
+          <div className="bg-black p-6 text-white border-4 border-black">
+            <div className="text-[10px] font-black uppercase tracking-[0.2em] opacity-60">Total Revenue</div>
+            <div className="mt-2 text-4xl font-black tracking-tighter">${totalRevenue.toLocaleString()}</div>
           </div>
-          <div className="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
-            <div className="text-sm font-medium text-gray-500">Active Projects</div>
-            <div className="text-xl font-bold text-indigo-600">{activeProjects}</div>
+          <div className="bg-white p-6 border-4 border-black flex justify-between items-center">
+            <div className="text-xs font-black uppercase tracking-widest">Active Projects</div>
+            <div className="text-2xl font-black">{activeProjects}</div>
           </div>
         </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Projects List */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-              <Briefcase className="h-5 w-5 text-indigo-500"/> 
-              Projects
+        <div className="bg-white border-4 border-black p-8">
+          <div className="flex justify-between items-center mb-8 border-b-2 border-black pb-4">
+            <h3 className="text-xl font-black text-black uppercase tracking-widest flex items-center gap-3">
+              <Briefcase className="h-6 w-6" strokeWidth={3}/> 
+              Log:Projects
             </h3>
-            <span className="bg-gray-100 text-gray-600 text-xs py-1 px-2.5 rounded-full font-medium">{projects.length}</span>
+            <span className="bg-black text-white text-xs py-1 px-3 font-black">{projects.length}</span>
           </div>
           
           {projects.length === 0 ? (
-            <div className="text-sm text-gray-500 py-4">No projects found for this client.</div>
+            <div className="text-[10px] font-black uppercase tracking-widest opacity-40 py-8">Record_Set:Empty</div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {projects.map(project => (
-                <div key={project._id} className="border border-gray-100 rounded-lg p-4 hover:border-indigo-100 transition-colors">
-                  <div className="flex justify-between items-start mb-2">
-                    <div className="font-medium text-gray-900">{project.name}</div>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${project.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                <div key={project._id} className="border-2 border-black p-5 hover:bg-black hover:text-white transition-all cursor-default group">
+                  <div className="flex justify-between items-start mb-4">
+                    <div className="font-black uppercase text-sm tracking-widest">{project.name}</div>
+                    <span className={`text-[10px] px-2 py-0.5 border-2 font-black uppercase ${project.status === 'Active' ? 'border-black bg-white group-hover:bg-black group-hover:text-white' : 'bg-black text-white group-hover:bg-white group-hover:text-black hover:invert transition-all'}`}>
                       {project.status}
                     </span>
                   </div>
-                  {project.budget && <div className="text-sm text-gray-500">Budget: ${project.budget.toLocaleString()}</div>}
+                  {project.budget && <div className="text-[10px] font-bold uppercase opacity-60 tracking-widest">Entry: ${project.budget.toLocaleString()}</div>}
                 </div>
               ))}
             </div>
@@ -145,31 +148,31 @@ const ClientDetails = () => {
         </div>
 
         {/* Invoices List */}
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <div className="flex justify-between items-center mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-               <FileText className="h-5 w-5 text-indigo-500"/>
-               Invoices
+        <div className="bg-white border-4 border-black p-8">
+          <div className="flex justify-between items-center mb-8 border-b-2 border-black pb-4">
+            <h3 className="text-xl font-black text-black uppercase tracking-widest flex items-center gap-3">
+               <FileText className="h-6 w-6" strokeWidth={3}/>
+               Log:Invoices
             </h3>
-            <span className="bg-gray-100 text-gray-600 text-xs py-1 px-2.5 rounded-full font-medium">{invoices.length}</span>
+            <span className="bg-black text-white text-xs py-1 px-3 font-black">{invoices.length}</span>
           </div>
 
           {invoices.length === 0 ? (
-            <div className="text-sm text-gray-500 py-4">No invoices found for this client.</div>
+            <div className="text-[10px] font-black uppercase tracking-widest opacity-40 py-8">Record_Set:Empty</div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-4">
               {invoices.map(invoice => (
-                <div key={invoice._id} className="border border-gray-100 rounded-lg p-4 flex justify-between items-center hover:border-indigo-100 transition-colors">
+                <div key={invoice._id} className="border-2 border-black p-5 flex justify-between items-center hover:bg-black hover:text-white transition-all group cursor-default">
                   <div>
-                    <div className="font-medium text-indigo-600 text-sm">{invoice.invoiceNumber}</div>
-                    <div className="text-xs text-gray-500 mt-1">Due: {new Date(invoice.dueDate).toLocaleDateString()}</div>
+                    <div className="font-black text-black group-hover:text-white uppercase text-xs tracking-tighter">{invoice.invoiceNumber}</div>
+                    <div className="text-[10px] font-bold uppercase opacity-60 mt-1">Due: {new Date(invoice.dueDate).toLocaleDateString()}</div>
                   </div>
                   <div className="text-right">
-                    <div className="font-semibold text-gray-900">${invoice.totalAmount.toLocaleString()}</div>
-                    <span className={`inline-block mt-1 text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full ${
-                      invoice.status === 'Paid' ? 'bg-green-100 text-green-700' : 
-                      invoice.status === 'Overdue' ? 'bg-red-100 text-red-700' : 
-                      'bg-gray-100 text-gray-700'
+                    <div className="font-black text-lg tracking-tighter">${invoice.totalAmount.toLocaleString()}</div>
+                    <span className={`inline-block mt-2 text-[10px] uppercase font-black tracking-[0.2em] px-2 py-0.5 border-2 ${
+                      invoice.status === 'Paid' ? 'border-2 border-black bg-white text-black group-hover:bg-white' : 
+                      invoice.status === 'Overdue' ? 'bg-black text-white group-hover:bg-white group-hover:text-black border-2 border-black' : 
+                      'border-black border-dashed opacity-60'
                     }`}>
                       {invoice.status}
                     </span>

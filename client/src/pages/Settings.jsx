@@ -28,11 +28,11 @@ function Toast({ message, type, onDone }) {
   }, [onDone]);
 
   const base =
-    'fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-2xl text-sm font-medium transition-all';
+    'fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3 border-4 border-black text-sm font-black transition-all uppercase tracking-widest';
   const styles =
     type === 'success'
-      ? `${base} bg-emerald-600 text-white`
-      : `${base} bg-red-600 text-white`;
+      ? `${base} bg-black text-white`
+      : `${base} bg-white text-black`;
 
   return (
     <div className={styles}>
@@ -48,14 +48,14 @@ function Toast({ message, type, onDone }) {
 
 function SectionCard({ icon: Icon, title, subtitle, children }) {
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-3 bg-gray-50/60">
-        <div className="h-9 w-9 rounded-lg bg-indigo-50 flex items-center justify-center">
-          <Icon className="h-4 w-4 text-indigo-600" />
+    <div className="bg-white border-4 border-black overflow-hidden">
+      <div className="px-6 py-5 border-b-4 border-black flex items-center gap-3 bg-black text-white">
+        <div className="h-9 w-9 border-2 border-white flex items-center justify-center">
+          <Icon className="h-4 w-4" strokeWidth={2.5} />
         </div>
         <div>
-          <h2 className="text-base font-semibold text-gray-900 leading-tight">{title}</h2>
-          {subtitle && <p className="text-xs text-gray-500 mt-0.5">{subtitle}</p>}
+          <h2 className="text-sm font-black uppercase tracking-widest leading-tight">{title}</h2>
+          {subtitle && <p className="text-[10px] uppercase opacity-70 mt-0.5">{subtitle}</p>}
         </div>
       </div>
       <div className="p-6">{children}</div>
@@ -65,26 +65,26 @@ function SectionCard({ icon: Icon, title, subtitle, children }) {
 
 function Field({ label, hint, children }) {
   return (
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+    <div className="space-y-1">
+      <label className="block text-xs font-black text-black uppercase tracking-widest">
         {label}
       </label>
       {children}
-      {hint && <p className="mt-1 text-xs text-gray-400">{hint}</p>}
+      {hint && <p className="text-[10px] text-black font-bold uppercase opacity-60 tracking-tighter">{hint}</p>}
     </div>
   );
 }
 
 const inputCls =
-  'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all';
+  'w-full px-4 py-3 border-2 border-black bg-white text-black placeholder-black/30 outline-none focus:bg-black focus:text-white transition-all font-bold uppercase text-sm';
 
 const selectCls =
-  'w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition-all';
+  'w-full px-4 py-3 border-2 border-black bg-white text-black outline-none focus:bg-black focus:text-white transition-all font-bold uppercase text-sm';
 
 // ── main component ───────────────────────────────────────────────────────────
 
 const Settings = () => {
-  const { user, login: reLogin } = useAuth();
+  const { user, updateUser } = useAuth();
 
   // ── profile state
   const [profile, setProfile] = useState({
@@ -120,8 +120,8 @@ const Settings = () => {
   });
 
   // ── ui state
-  const [saving, setSaving] = useState(null); // which section is saving
-  const [toast, setToast] = useState(null);   // { message, type }
+  const [saving, setSaving] = useState(null);
+  const [toast, setToast] = useState(null);
 
   // ── populate from user on mount / user change
   useEffect(() => {
@@ -145,13 +145,14 @@ const Settings = () => {
 
   const showToast = (message, type = 'success') => setToast({ message, type });
 
-  // ── generic profile/business/payment save
+  // ── generic profile/business/payment save — now refreshes AuthContext
   const saveSection = async (sectionKey, payload) => {
     setSaving(sectionKey);
     try {
-      const res = await api.put('/auth/me', payload);
-      // Update AuthContext user without full re-login
-      // We re-fetch /auth/me via the existing getMe pattern
+      await api.put('/auth/me', payload);
+      // Re-fetch the user so AuthContext (and the sidebar avatar) stays in sync
+      const userRes = await api.get('/auth/me');
+      updateUser(userRes.data.data);
       showToast('Changes saved successfully');
     } catch (err) {
       showToast(err.response?.data?.error || 'Failed to save changes', 'error');
@@ -211,10 +212,10 @@ const Settings = () => {
     <button
       type="submit"
       disabled={saving === section}
-      className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white text-sm font-medium rounded-lg hover:bg-indigo-700 disabled:opacity-60 transition-all focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+      className="flex items-center gap-2 px-6 py-3 bg-black text-white text-xs font-black uppercase tracking-widest border-2 border-black hover:bg-white hover:text-black disabled:opacity-30 transition-all focus:outline-none"
     >
-      <Save className="h-3.5 w-3.5" />
-      {saving === section ? 'Saving…' : label}
+      <Save className="h-4 w-4" strokeWidth={2.5} />
+      {saving === section ? 'RECORDING…' : label}
     </button>
   );
 
@@ -228,30 +229,32 @@ const Settings = () => {
         />
       )}
 
-      <div className="max-w-2xl mx-auto space-y-6 pb-12">
+      <div className="max-w-2xl mx-auto space-y-10 pb-12 overflow-x-hidden">
         {/* ── header ── */}
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
-          <p className="mt-1 text-sm text-gray-500">
-            Manage your account, business details, and preferences.
+        <div className="border-b-4 border-black pb-6">
+          <h1 className="text-4xl font-black text-black uppercase tracking-tighter">Settings</h1>
+          <p className="mt-2 text-xs font-black text-black uppercase tracking-widest">
+            Configuration Panel
           </p>
         </div>
 
         {/* ── breadcrumb nav ── */}
-        <nav className="flex items-center gap-1 text-xs text-gray-400 font-medium">
-          <span className="text-gray-600">Account</span>
-          <ChevronRight className="h-3 w-3" />
-          <span>Settings</span>
+        <nav className="flex items-center gap-2 text-[10px] text-black font-black uppercase tracking-widest opacity-40">
+          <span>Root</span>
+          <ChevronRight className="h-3 w-3" strokeWidth={3} />
+          <span>System</span>
+          <ChevronRight className="h-3 w-3" strokeWidth={3} />
+          <span className="opacity-100 underline">Configuration</span>
         </nav>
 
         {/* ── avatar + name banner ── */}
-        <div className="flex items-center gap-4 bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl px-6 py-5 text-white shadow-lg shadow-indigo-100">
-          <div className="h-14 w-14 rounded-2xl bg-white/20 backdrop-blur flex items-center justify-center text-2xl font-bold shrink-0">
+        <div className="flex items-center gap-6 bg-black p-8 text-white border-4 border-black">
+          <div className="h-20 w-20 border-4 border-white flex items-center justify-center text-4xl font-black shrink-0">
             {user?.name?.charAt(0).toUpperCase() || '?'}
           </div>
           <div className="min-w-0">
-            <p className="text-lg font-semibold truncate">{user?.name}</p>
-            <p className="text-indigo-200 text-sm truncate">{user?.email}</p>
+            <p className="text-2xl font-black uppercase tracking-tighter truncate">{user?.name}</p>
+            <p className="text-xs font-bold uppercase opacity-60 tracking-widest truncate mt-1">{user?.email}</p>
           </div>
         </div>
 
@@ -455,11 +458,10 @@ const Settings = () => {
               </Field>
             </div>
 
-            {/* inline mismatch warning */}
             {passwords.confirmPassword &&
               passwords.newPassword !== passwords.confirmPassword && (
-                <p className="text-xs text-red-500 flex items-center gap-1">
-                  <AlertCircle className="h-3 w-3" /> Passwords do not match
+                <p className="text-[10px] font-black text-black uppercase tracking-widest flex items-center gap-2 bg-white border-2 border-black p-2 mt-2">
+                  <AlertCircle className="h-4 w-4" strokeWidth={3} /> Passwords Mismatch
                 </p>
               )}
 
