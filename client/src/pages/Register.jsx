@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { Briefcase } from 'lucide-react';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { Briefcase } from "lucide-react";
 
 const Register = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const { register } = useAuth();
   const navigate = useNavigate();
 
@@ -15,9 +15,9 @@ const Register = () => {
     e.preventDefault();
     try {
       await register(name, email, password);
-      navigate('/dashboard');
+      navigate("/dashboard");
     } catch (err) {
-      setError('Registration failed. Please check your inputs.');
+      setError("Registration failed. Please check your inputs.");
     }
   };
 
@@ -43,18 +43,22 @@ const Register = () => {
           )}
           <div className="space-y-6">
             <div>
-              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Full Name</label>
+              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">
+                Full Name
+              </label>
               <input
                 type="text"
                 required
                 className="block w-full px-4 py-3 border-4 border-black bg-white text-black placeholder-black/30 focus:bg-black focus:text-white transition-all outline-none font-bold uppercase text-sm"
-                placeholder="JOHN DOE"
+                placeholder="VIRAT KOHLI"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
               />
             </div>
             <div>
-              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Email Address</label>
+              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">
+                Email Address
+              </label>
               <input
                 type="email"
                 required
@@ -65,7 +69,9 @@ const Register = () => {
               />
             </div>
             <div>
-              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">Password</label>
+              <label className="block text-xs font-black text-black uppercase mb-1 tracking-widest">
+                Password
+              </label>
               <input
                 type="password"
                 required
@@ -88,7 +94,10 @@ const Register = () => {
         </form>
         <div className="text-center text-[10px] font-black uppercase tracking-widest">
           <span className="opacity-40">Entry recorded? </span>
-          <Link to="/login" className="underline hover:bg-black hover:text-white p-1 transition-colors">
+          <Link
+            to="/login"
+            className="underline hover:bg-black hover:text-white p-1 transition-colors"
+          >
             Sign in
           </Link>
         </div>

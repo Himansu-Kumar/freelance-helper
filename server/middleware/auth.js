@@ -1,5 +1,5 @@
-import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
+import jwt from "jsonwebtoken";
+import User from "../models/User.js";
 
 // Protect routes
 export const protect = async (req, res, next) => {
@@ -7,15 +7,15 @@ export const protect = async (req, res, next) => {
 
   if (
     req.headers.authorization &&
-    req.headers.authorization.startsWith('Bearer')
+    req.headers.authorization.startsWith("Bearer")
   ) {
-    // Set token from Bearer token in header
-    token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization.split(" ")[1];
   }
 
-  // Make sure token exists
   if (!token) {
-    return res.status(401).json({ success: false, error: 'Not authorized to access this route' });
+    return res
+      .status(401)
+      .json({ success: false, error: "Not authorized to access this route" });
   }
 
   try {
@@ -26,6 +26,8 @@ export const protect = async (req, res, next) => {
 
     next();
   } catch (err) {
-    return res.status(401).json({ success: false, error: 'Not authorized to access this route' });
+    return res
+      .status(401)
+      .json({ success: false, error: "Not authorized to access this route" });
   }
 };

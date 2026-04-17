@@ -1,8 +1,5 @@
-import User from '../models/User.js';
+import User from "../models/User.js";
 
-// @desc    Register user
-// @route   POST /api/v1/auth/register
-// @access  Public
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
@@ -14,27 +11,31 @@ export const register = async (req, res) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/v1/auth/login
-// @access  Public
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ success: false, error: 'Please provide an email and password' });
+      return res.status(400).json({
+        success: false,
+        error: "Please provide an email and password",
+      });
     }
 
-    const user = await User.findOne({ email }).select('+password');
+    const user = await User.findOne({ email }).select("+password");
 
     if (!user) {
-      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+      return res
+        .status(401)
+        .json({ success: false, error: "Invalid credentials" });
     }
 
     const isMatch = await user.matchPassword(password);
 
     if (!isMatch) {
-      return res.status(401).json({ success: false, error: 'Invalid credentials' });
+      return res
+        .status(401)
+        .json({ success: false, error: "Invalid credentials" });
     }
 
     sendTokenResponse(user, 200, res);
@@ -43,9 +44,6 @@ export const login = async (req, res) => {
   }
 };
 
-// @desc    Get current logged in user
-// @route   GET /api/v1/auth/me
-// @access  Private
 export const getMe = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
@@ -55,9 +53,6 @@ export const getMe = async (req, res) => {
   }
 };
 
-// @desc    Update user profile details
-// @route   PUT /api/v1/auth/me
-// @access  Private
 export const updateProfile = async (req, res) => {
   try {
     const fieldsToUpdate = {
@@ -72,7 +67,7 @@ export const updateProfile = async (req, res) => {
 
     // Remove undefined keys so we don't overwrite with undefined
     Object.keys(fieldsToUpdate).forEach(
-      (key) => fieldsToUpdate[key] === undefined && delete fieldsToUpdate[key]
+      (key) => fieldsToUpdate[key] === undefined && delete fieldsToUpdate[key],
     );
 
     const user = await User.findByIdAndUpdate(req.user.id, fieldsToUpdate, {
@@ -86,15 +81,14 @@ export const updateProfile = async (req, res) => {
   }
 };
 
-// @desc    Update password
-// @route   PUT /api/v1/auth/updatepassword
-// @access  Private
 export const updatePassword = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('+password');
+    const user = await User.findById(req.user.id).select("+password");
 
     if (!(await user.matchPassword(req.body.currentPassword))) {
-      return res.status(401).json({ success: false, error: 'Current password is incorrect' });
+      return res
+        .status(401)
+        .json({ success: false, error: "Current password is incorrect" });
     }
 
     user.password = req.body.newPassword;
