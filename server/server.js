@@ -15,7 +15,10 @@ const app = express();
 app.use(express.json());
 
 // Enable CORS
-app.use(cors());
+app.use(cors({
+  origin: ['https://freelance-helper-six.vercel.app', 'http://localhost:5173'],
+  credentials: true
+}));
 
 // Route files
 import auth from './routes/auth.js';
