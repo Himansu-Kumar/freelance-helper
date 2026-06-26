@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://freelance-helper-production.up.railway.app/api/v1',
+  baseURL: 'https://freelance-helper.onrender.com/',
   headers: {
     'Content-Type': 'application/json',
   },
